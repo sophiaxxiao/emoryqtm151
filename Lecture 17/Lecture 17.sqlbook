@@ -99,9 +99,18 @@ Try it yourself!
 -- Select a new driver id (needs to be unique)
 -- Make sure to deparate arguments by a semicolon!
 
+-- "INSET INTO" adds rows with VALUES ... to the bottom of the table
+-- In SQL different lines need to be separated by a semicolon ";"
+-- You write system commands in capital letters to easily distinguish
+-- column names from system commands
 
+-- Syntax: INSERT INTO tablename VALUES(column values, column value...etc)
 
+INSERT INTO drivers  VALUES (11, 'Sophia Xiao','American',1);
 
+INSERT INTO drivers  VALUES (14, 'James Kim', 'Saipanese',1);
+
+INSERT INTO drivers VALUES(90, 'Lightning McQueen', 'American', 1000)
 -- SQLBook: Markup
 # <span style="color:darkblue"> II. Dataset Operations </span>
 
@@ -112,14 +121,16 @@ Extracting columns from table
 -- SQLBook: Code
 -- SELECT extracts certain COLUMNS
 -- FROM is used to indicate the source table
-
-SELECT driver_id nationality FROM drivers;
+-- SELECT variable, variable FROM tablename
+SELECT driver_id, nationality FROM drivers;
 -- SQLBook: Markup
 <font size="5"> 
 
 Extract all columns from table
 -- SQLBook: Code
 -- The symbol "*" is a shorthand for "all variables"
+
+-- SELECT * FROM drivers selects all the columns from the data
 SELECT * FROM drivers;
 -- SQLBook: Markup
 <font size = "5">
@@ -127,8 +138,10 @@ SELECT * FROM drivers;
 Subsetting rows
 -- SQLBook: Code
 -- The WHERE command evaluates logical conditions to subset rows
+
 SELECT * FROM drivers
 WHERE nationality = 'German';
+
 
 -- Evalute OR conditions
 SELECT * FROM drivers
@@ -137,6 +150,8 @@ WHERE (nationality = 'German') OR (nationality = 'British');
 -- Evaluate AND conditions
 SELECT * FROM drivers
 WHERE (nationality = 'German') AND (driver_id = 2);
+
+-- USE SINGLE QUOTES AND SINGLE EQUAL SIGNS; FOR BOOLEANS, USE 'AND' OR 'OR'
 
 -- SQLBook: Markup
 <font size="5"> 
@@ -147,6 +162,9 @@ Aggregate
 -- such as SUM() or AVG() 
 -- The AS is an alias which assigns a name to the aggregate statistic
 
+-- functions are system commands; lowercase is user provided aliases
+
+-- COUNT(*) 
 SELECT COUNT(*) AS num_rows,
        SUM(victories) AS sum_victories,
        AVG(victories) AS mean_victories,
@@ -158,10 +176,11 @@ FROM drivers
 
 Sort
 -- SQLBook: Code
--- Order in ascending order of victories
+-- ASC means ascending order 
 -- Remember that * means that all columns are selected
 SELECT * FROM drivers
 ORDER BY victories ASC;
+
 
 -- Order in descending order of victories
 SELECT * FROM drivers
@@ -187,7 +206,8 @@ Try it yourself!
 with more than 60 victories
 -- SQLBook: Code
 -- Write your own code!
-
+SELECT nationality, driver_id FROM drivers
+WHERE (victories > 60)
 
 
 
@@ -199,19 +219,20 @@ with more than 60 victories
 
 Groupby + Aggregate
 -- SQLBook: Code
--- This command computes summary statistics by nationalitySELECT COUNT(*) AS num_rows,
+-- This command computes summary statistics by nationality
+--SELECT COUNT(*) AS num_rows,
 -- Including "nationality" (the grouping column) is optional in the select
-SELECT nationality,
+SELECT nationality, -- gives the variable you want to summarize by
        SUM(victories) AS sum_victories,
        AVG(victories) AS mean_victories,
        MIN(victories) AS min_victories,
        MAX(victories) AS max_victories
-FROM drivers
-GROUP BY nationality;
+FROM drivers -- as always, specify table where data is coming from
+GROUP BY nationality; -- make sure you group by the variable you want to summarize by 
 -- SQLBook: Markup
 <font size = "5">
 
-Subsetting **after** aggregating
+Subsetting **after** aggregating: use HAVING command instead of WHERE if you want to subset after aggregating
 -- SQLBook: Code
 -- This command computes the same table as above
 -- then filters with HAVING
@@ -241,9 +262,9 @@ SELECT nationality,
        MIN(victories) AS min_victories,
        MAX(victories) AS max_victories
 FROM drivers
-WHERE nationality = 'German'
+WHERE nationality = 'German' -- YOU CAN USE WHERE ONLY BEFORE GROUP BY
 GROUP BY nationality
-HAVING SUM(victories) > 50;
+HAVING SUM(victories) > 50; -- use HAVING after group by
 -- SQLBook: Markup
 # <span style="color:darkblue"> IV. Learning more </span>
 
@@ -253,10 +274,10 @@ Equivalence:
 
 **PYTHON** $\qquad \qquad \ \ $ **SQL** <br>
 ```[] ``` $\qquad \qquad \qquad \ \ \ $ ```SELECT``` <br>
-```.query() ``` $\qquad \qquad $ ```WHERE``` (before subsetting) <br>
-```.query() ``` $\qquad \qquad $ ```HAVING``` (after subsetting) <br>
-```.groupby().agg() ``` $\ $ ```SELECT ... AS ... ```<br>
-$\qquad \qquad \qquad \qquad \ $```GROUP BY```<br>
+```.query() ``` $\qquad \qquad $ ```WHERE``` (before aggregating) <br>
+```.query() ``` $\qquad \qquad $ ```HAVING``` (after aggregating) <br>
+```.groupby().agg() ``` $\ $ ```SELECT ... [main variable], [command(any variable)] AS [alias]...```<br>
+$\qquad \qquad \qquad \qquad \ $```GROUP BY [main variable]```<br>
 
 -- SQLBook: Code
 
