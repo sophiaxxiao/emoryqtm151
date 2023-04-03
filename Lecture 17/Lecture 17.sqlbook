@@ -171,16 +171,17 @@ SELECT COUNT(*) AS num_rows,
        MIN(victories) AS min_victories,
        MAX(victories) AS max_victories
 FROM drivers
+
+
 -- SQLBook: Markup
 <font size="5"> 
 
 Sort
 -- SQLBook: Code
--- ASC means ascending order 
+-- Order in ascending order of victories
 -- Remember that * means that all columns are selected
 SELECT * FROM drivers
 ORDER BY victories ASC;
-
 
 -- Order in descending order of victories
 SELECT * FROM drivers
@@ -206,8 +207,7 @@ Try it yourself!
 with more than 60 victories
 -- SQLBook: Code
 -- Write your own code!
-SELECT nationality, driver_id FROM drivers
-WHERE (victories > 60)
+
 
 
 
@@ -219,20 +219,19 @@ WHERE (victories > 60)
 
 Groupby + Aggregate
 -- SQLBook: Code
--- This command computes summary statistics by nationality
---SELECT COUNT(*) AS num_rows,
+-- This command computes summary statistics by nationalitySELECT COUNT(*) AS num_rows,
 -- Including "nationality" (the grouping column) is optional in the select
-SELECT nationality, -- gives the variable you want to summarize by
+SELECT nationality,
        SUM(victories) AS sum_victories,
        AVG(victories) AS mean_victories,
        MIN(victories) AS min_victories,
        MAX(victories) AS max_victories
-FROM drivers -- as always, specify table where data is coming from
-GROUP BY nationality; -- make sure you group by the variable you want to summarize by 
+FROM drivers
+GROUP BY nationality;
 -- SQLBook: Markup
 <font size = "5">
 
-Subsetting **after** aggregating: use HAVING command instead of WHERE if you want to subset after aggregating
+Subsetting **after** aggregating
 -- SQLBook: Code
 -- This command computes the same table as above
 -- then filters with HAVING
@@ -262,9 +261,9 @@ SELECT nationality,
        MIN(victories) AS min_victories,
        MAX(victories) AS max_victories
 FROM drivers
-WHERE nationality = 'German' -- YOU CAN USE WHERE ONLY BEFORE GROUP BY
+WHERE nationality = 'German'
 GROUP BY nationality
-HAVING SUM(victories) > 50; -- use HAVING after group by
+HAVING SUM(victories) > 50;
 -- SQLBook: Markup
 # <span style="color:darkblue"> IV. Learning more </span>
 
@@ -274,10 +273,10 @@ Equivalence:
 
 **PYTHON** $\qquad \qquad \ \ $ **SQL** <br>
 ```[] ``` $\qquad \qquad \qquad \ \ \ $ ```SELECT``` <br>
-```.query() ``` $\qquad \qquad $ ```WHERE``` (before aggregating) <br>
-```.query() ``` $\qquad \qquad $ ```HAVING``` (after aggregating) <br>
-```.groupby().agg() ``` $\ $ ```SELECT ... [main variable], [command(any variable)] AS [alias]...```<br>
-$\qquad \qquad \qquad \qquad \ $```GROUP BY [main variable]```<br>
+```.query() ``` $\qquad \qquad $ ```WHERE``` (before subsetting) <br>
+```.query() ``` $\qquad \qquad $ ```HAVING``` (after subsetting) <br>
+```.groupby().agg() ``` $\ $ ```SELECT ... AS ... ```<br>
+$\qquad \qquad \qquad \qquad \ $```GROUP BY```<br>
 
 -- SQLBook: Code
 

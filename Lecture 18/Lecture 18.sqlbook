@@ -83,7 +83,13 @@ Try it yourself!
 
 - Create a new table for "bills_subjects"
 -- SQLBook: Code
-# Write your own code
+DROP TABLE IF EXISTS bills_subjects;
+CREATE TABLE bills_subjects (
+    "Congress" int ,
+    bill_number int ,
+    bill_type varchar(30),
+    bill_subject varchar(30)
+);
 
 
 
@@ -123,6 +129,10 @@ WITH (DELIMITER ',', FORMAT csv, HEADER MATCH);
 -----  FORMAT indicates that this is a CSV
 -----  HEADER MATCH indicates that the first row contains column
 -----  names and should be ignored when importing.
+
+-- COPY dataset_name (from server)
+--FROM 'FILE PATH HERE'
+-- WITH (DELIMITER <INSERT DELIMITER HERE>, FORMAT <file format>, <HEADER MATCH-ONLY IF FIRST ROW CONTAINS COLUMN NAMES>)
 -- SQLBook: Markup
 <font size = "5">
 
@@ -149,7 +159,7 @@ Try it yourself!
 SELECT * FROM us_congress_members
 ```
 -- SQLBook: Code
-# Write your own code
+--- Write your own code
 -- Note in the instructor's computer this is:
 -- You just have to change the FROM argument
 --
@@ -157,7 +167,9 @@ SELECT * FROM us_congress_members
 -- FROM 'D:\GitHub\qtm151spring2023\Lecture 18\data\us_congress_members.csv'
 -- WITH (DELIMITER ',', FORMAT csv, HEADER MATCH);
 
-
+COPY us_congress_members
+FROM '/private/tmp/us_congress_members.csv'
+WITH (DELIMITER ',', FORMAT csv, HEADER MATCH)
 
 
 
